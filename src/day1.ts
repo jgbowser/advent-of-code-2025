@@ -48,7 +48,9 @@ function part2(): string {
       // if we are negative that means we passed 0
       // increment, then figure out what our new dial position is by adding 100 to get our new dial position.
       if (positionAfterMove < 0) {
-        timesPassedZero++;
+        if (previousPosition !== 0) {
+          timesPassedZero++;
+        }
         dialPosition = positionAfterMove + 100;
         continue;
       } else if (positionAfterMove === 0 && previousPosition !== 0) {
