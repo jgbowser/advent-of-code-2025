@@ -36,19 +36,19 @@ function condenseRanges(ranges: string[]): [number, number][] {
 function isIncludedInRange(id: number, ranges: [number, number][]): boolean {
   let left = 0;
   let right = ranges.length - 1;
-  
+
   while (left <= right) {
     const mid = Math.floor((left + right) / 2);
     const [start, end] = ranges[mid]!;
-    
+
     if (id >= start && id <= end) {
       // Found in this range
       return true;
     } else if (id < start) {
-       // Search left half
+      // Search left half
       right = mid - 1;
     } else {
-       // Search right half (id > end)
+      // Search right half (id > end)
       left = mid + 1;
     }
   }
@@ -56,10 +56,11 @@ function isIncludedInRange(id: number, ranges: [number, number][]): boolean {
   return false;
 }
 
+const condensedRanges = condenseRanges(ranges);
+
 function part1(): string {
   console.time("part1");
   let freshIngredients = 0;
-  const condensedRanges = condenseRanges(ranges);
   for (const id of ids) {
     if (isIncludedInRange(id, condensedRanges)) {
       freshIngredients++;
@@ -73,7 +74,6 @@ console.log(part1());
 
 function part2(): string {
   console.time("part2");
-  const condensedRanges = condenseRanges(ranges);
   let allFreshIdsCount = 0;
   for (const [start, end] of condensedRanges) {
     allFreshIdsCount += end - start + 1;
