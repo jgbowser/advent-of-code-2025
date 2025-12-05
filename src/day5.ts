@@ -33,12 +33,35 @@ function condenseRanges(ranges: string[]): [number, number][] {
   return condensedRanges;
 }
 
+function isIncludedInRange(id: number, ranges: [number, number][]): boolean {
+  let left = 0;
+  let right = ranges.length - 1;
+  
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    const [start, end] = ranges[mid]!;
+    
+    if (id >= start && id <= end) {
+      // Found in this range
+      return true;
+    } else if (id < start) {
+       // Search left half
+      right = mid - 1;
+    } else {
+       // Search right half (id > end)
+      left = mid + 1;
+    }
+  }
+  // If we get here, the ID was not found in any of the ranges
+  return false;
+}
+
 function part1(): string {
   console.time("part1");
   let freshIngredients = 0;
   const condensedRanges = condenseRanges(ranges);
   for (const id of ids) {
-    if (condensedRanges.some(([start, end]) => id >= start && id <= end)) {
+    if (isIncludedInRange(id, condensedRanges)) {
       freshIngredients++;
     }
   }
